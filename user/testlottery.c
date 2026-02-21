@@ -16,12 +16,13 @@ static void test_share(int duration, int tA, int tB){
 	pipe(pipeA);
 	pipe(pipeB);
 
+
+   	settickets(tA);
 	pidA = fork();
 	if(pidA == 0){
 		close(pipeA[0]);
     	close(pipeB[0]);
     	close(pipeB[1]);
-    	settickets(tA);
     	int done = 0;
     	uint start = uptime();
     	while((uptime() - start) < duration){
@@ -33,12 +34,12 @@ static void test_share(int duration, int tA, int tB){
     	exit();
 	}	
 
+    settickets(tB);
 	pidB = fork();
   	if(pidB == 0){
     	close(pipeB[0]);
     	close(pipeA[0]);
     	close(pipeA[1]);
-    	settickets(tB);
     	int done = 0;
     	uint start = uptime();
     	while((uptime() - start) < duration){
